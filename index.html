@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drift.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff3b30;
+            --secondary-color: #ff6b61;
+            --dark-color: #121212;
+            --dark-secondary: #1e1e1e;
+            --light-color: #f5f5f7;
+            --text-color: #f5f5f7;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            
+            /* School mode variables */
+            --school-primary: #ffcc00;
+            --school-secondary: #ffd633;
+            --school-bg: #ffffff;
+            --school-secondary-bg: #f5f5f7;
+            --school-text: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color var(--transition-speed);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            margin-right: 12px;
+            position: relative;
+            transition: background-color var(--transition-speed);
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background-color: var(--dark-color);
+            border-radius: 5px;
+            transition: background-color var(--transition-speed);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            animation: slideUp 0.5s ease-out 0.2s both;
+        }
+
+        .toggle-label {
+            margin-right: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--dark-secondary);
+            transition: var(--transition-speed);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--light-color);
+            transition: var(--transition-speed);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Main Content */
+        .main {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--dark-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: background-color var(--transition-speed);
+            animation: slideUp 0.5s ease-out 0.3s both;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            transition: border-color var(--transition-speed);
+        }
+
+        .chat-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            display: flex;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            transition: background-color var(--transition-speed);
+        }
+
+        .message.ai .message-avatar {
+            background-color: var(--dark-color);
+            color: var(--primary-color);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .message-content {
+            background-color: var(--dark-color);
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .message.user .message-content {
+            background-color: var(--primary-color);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-content {
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-image {
+            max-width: 250px;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .message-image:hover {
+            transform: scale(1.05);
+        }
+
+        .chat-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: border-color var(--transition-speed);
+        }
+
+        .chat-input {
+            flex: 1;
+            background-color: var(--dark-color);
+            border: none;
+            border-radius: 24px;
+            padding: 12px 20px;
+            color: var(--text-color);
+            font-size: 14px;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.3);
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), transform 0.2s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Upload Section */
+        .upload-section {
+            width: 300px;
+            background-color: var(--dark-secondary);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            transition: background-color var(--transition-speed);
+            animation: slideUp 0.5s ease-out 0.4s both;
+        }
+
+        .upload-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color var(--transition-speed);
+        }
+
+        .upload-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .upload-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            transition: color var(--transition-speed);
+        }
+
+        .upload-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color var(--transition-speed);
+        }
+
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), transform 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-area {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color var(--transition-speed);
+        }
+
+        .upload-area.active {
+            border-color: var(--primary-color);
+        }
+
+        .upload-area-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color var(--transition-speed);
+        }
+
+        /* School Mode Styles */
+        body.school-mode {
+            background-color: var(--school-bg);
+            color: var(--school-text);
+        }
+
+        body.school-mode .logo-icon {
+            background-color: var(--school-primary);
+        }
+
+        body.school-mode .logo-icon::before {
+            background-color: var(--school-bg);
+        }
+
+        body.school-mode .chat-section,
+        body.school-mode .upload-section {
+            background-color: var(--school-secondary-bg);
+        }
+
+        body.school-mode .chat-header,
+        body.school-mode .upload-header,
+        body.school-mode .chat-input-container {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.school-mode .message.user .message-avatar {
+            background-color: var(--school-primary);
+        }
+
+        body.school-mode .message.ai .message-avatar {
+            background-color: var(--school-secondary-bg);
+            color: var(--school-primary);
+        }
+
+        body.school-mode .message.user .message-content {
+            background-color: var(--school-primary);
+            color: var(--school-text);
+        }
+
+        body.school-mode .message.ai .message-content {
+            background-color: var(--school-bg);
+            color: var(--school-text);
+        }
+
+        body.school-mode .chat-input {
+            background-color: var(--school-bg);
+            color: var(--school-text);
+        }
+
+        body.school-mode .chat-send-btn {
+            background-color: var(--school-primary);
+        }
+
+        body.school-mode .upload-icon {
+            color: var(--school-primary);
+        }
+
+        body.school-mode .upload-text,
+        body.school-mode .upload-area-text {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        body.school-mode .upload-btn {
+            background-color: var(--school-primary);
+            color: var(--school-text);
+        }
+
+        body.school-mode .upload-area {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.school-mode .upload-area.active {
+            border-color: var(--school-primary);
+        }
+
+        /* Math Help Content (Hidden by default) */
+        .math-content {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            background-color: var(--school-secondary-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .math-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .math-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--school-text);
+        }
+
+        .math-content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            color: var(--school-text);
+        }
+
+        .math-section {
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .math-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--school-text);
+        }
+
+        .math-card {
+            background-color: var(--school-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .math-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .math-card-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--school-text);
+        }
+
+        .math-card-description {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .math-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .math-formula {
+            font-family: 'Times New Roman', serif;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+            }
+
+            .upload-section {
+                width: 100%;
+                margin-top: 20px;
+                order: 2;
+            }
+
+            .chat-section {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 10px 0;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .logo-text {
+                font-size: 24px;
+            }
+
+            .toggle-label {
+                font-size: 12px;
+            }
+
+            .toggle {
+                width: 46px;
+                height: 24px;
+            }
+
+            .slider:before {
+                height: 18px;
+                width: 18px;
+                left: 3px;
+                bottom: 3px;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(22px);
+            }
+        }
+    </style>
+    <!-- Favicon for drift. -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3QgZmlsbD0iI2ZmM2IzMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIvPjxyZWN0IGZpbGw9IiMxMjEyMTIiIHg9IjgiIHk9IjgiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIi8+PC9zdmc+" id="favicon">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-text">drift.</div>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle-label">school mode</div>
+                <label class="toggle">
+                    <input type="checkbox" id="schoolModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="chat-section" id="chatSection">
+                <div class="chat-header">
+                    <div class="chat-title">ai homework helper</div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            hi there! i'm drift, your ai homework helper. what can i help you with today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="ask me anything about your homework...">
+                    <button class="chat-send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-header">
+                    <div class="upload-title">upload image</div>
+                </div>
+                <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <div class="upload-text">upload an image of your homework problem</div>
+                    <button class="upload-btn" id="uploadBtn">choose file</button>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <div class="upload-area" id="dropArea">
+                        <div class="upload-area-text">or drag and drop here</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Math Help Content (Hidden by default) -->
+            <div class="math-content" id="mathContent">
+                <div class="math-header">
+                    <div class="math-title">math help resources</div>
+                </div>
+                <div class="math-content-area">
+                    <div class="math-section">
+                        <div class="math-section-title">algebra formulas</div>
+                        <div class="math-card">
+                            <div class="math-card-title">quadratic formula</div>
+                            <div class="math-card-description">solve any quadratic equation in the form ax² + bx + c = 0</div>
+                            <div class="math-formula">x = (-b ± √(b² - 4ac)) / 2a</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: medium</span>
+                                <span>chapter 4.3</span>
+                            </div>
+                        </div>
+                        <div class="math-card">
+                            <div class="math-card-title">completing the square</div>
+                            <div class="math-card-description">transform a quadratic into the form a(x + h)² + k</div>
+                            <div class="math-formula">x² + bx + c = (x + b/2)² + (c - b²/4)</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: medium</span>
+                                <span>chapter 4.2</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="math-section">
+                        <div class="math-section-title">calculus formulas</div>
+                        <div class="math-card">
+                            <div class="math-card-title">power rule for derivatives</div>
+                            <div class="math-card-description">find the derivative of x raised to any power</div>
+                            <div class="math-formula">d/dx(x^n) = n·x^(n-1)</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: easy</span>
+                                <span>chapter 7.1</span>
+                            </div>
+                        </div>
+                        <div class="math-card">
+                            <div class="math-card-title">chain rule</div>
+                            <div class="math-card-description">find the derivative of composite functions</div>
+                            <div class="math-formula">d/dx[f(g(x))] = f'(g(x)) · g'(x)</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: hard</span>
+                                <span>chapter 7.4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="math-section">
+                        <div class="math-section-title">geometry formulas</div>
+                        <div class="math-card">
+                            <div class="math-card-title">circle area and circumference</div>
+                            <div class="math-card-description">calculate the area and circumference of a circle</div>
+                            <div class="math-formula">Area = πr² | Circumference = 2πr</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: easy</span>
+                                <span>chapter 9.1</span>
+                            </div>
+                        </div>
+                        <div class="math-card">
+                            <div class="math-card-title">pythagorean theorem</div>
+                            <div class="math-card-description">find the sides of a right triangle</div>
+                            <div class="math-formula">a² + b² = c²</div>
+                            <div class="math-card-footer">
+                                <span>difficulty: easy</span>
+                                <span>chapter 8.2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const schoolModeToggle = document.getElementById('schoolModeToggle');
+        const chatSection = document.getElementById('chatSection');
+        const uploadSection = document.getElementById('uploadSection');
+        const mathContent = document.getElementById('mathContent');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const dropArea = document.getElementById('dropArea');
+        const favicon = document.getElementById('favicon');
+        const logoText = document.querySelector('.logo-text');
+        const chatTitle = document.querySelector('.chat-title');
+        
+        // School Mode Toggle
+        schoolModeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Enable School Mode
+                document.body.classList.add('school-mode');
+                document.title = 'Math Help';
+                logoText.textContent = 'math help';
+                chatTitle.textContent = 'study resources';
+                
+                // Change favicon to yellow math icon
+                favicon.href = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3QgZmlsbD0iI2ZmY2MwMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIvPjx0ZXh0IHg9IjUiIHk9IjE3IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzMzMzMzIj4xMjM8L3RleHQ+PC9zdmc+';
+                
+                // Hide chat and upload sections, show math content
+                chatSection.style.display = 'none';
+                uploadSection.style.display = 'none';
+                mathContent.style.display = 'flex';
+            } else {
+                // Disable School Mode
+                document.body.classList.remove('school-mode');
+                document.title = 'drift.';
+                logoText.textContent = 'drift.';
+                chatTitle.textContent = 'ai homework helper';
+                
+                // Restore original favicon
+                favicon.href = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHJlY3QgZmlsbD0iI2ZmM2IzMCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIvPjxyZWN0IGZpbGw9IiMxMjEyMTIiIHg9IjgiIHk9IjgiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiIHJ4PSIyIi8+PC9zdmc+';
+                
+                // Show chat and upload sections, hide math content
+                chatSection.style.display = 'flex';
+                uploadSection.style.display = 'flex';
+                mathContent.style.display = 'none';
+            }
+        });
+        
+        // Send Message
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Simulate AI thinking
+            setTimeout(() => {
+                // Generate AI response
+                const response = getAIResponse(message);
+                
+                // Add AI response to chat
+                addMessage(response, 'ai');
+                
+                // Scroll to bottom
+                scrollToBottom();
+            }, 1000);
+        }
+        
+        // Add Message to Chat
+        function addMessage(text, type, image = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            
+            const icon = document.createElement('i');
+            icon.className = type === 'user' ? 'fas fa-user' : 'fas fa-robot';
+            avatarDiv.appendChild(icon);
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            // Add image if provided
+            if (image) {
+                const img = document.createElement('img');
+                img.src = image;
+                img.className = 'message-image';
+                img.addEventListener('click', () => {
+                    window.open(image, '_blank');
+                });
+                contentDiv.appendChild(img);
+            }
+            
+            messageDiv.appendChild(avatarDiv);
+            messageDiv.appendChild(contentDiv);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            scrollToBottom();
+        }
+        
+        // Scroll chat to bottom
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Get AI Response
+        function getAIResponse(message) {
+            message = message.toLowerCase();
+            
+            // Check for specific keywords and provide relevant responses
+            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return "hi there! how can i help with your homework today?";
+            } else if (message.includes('math') || message.includes('equation') || message.includes('formula')) {
+                return "i can help with math problems! what specific concept or equation are you working on?";
+            } else if (message.includes('history') || message.includes('historical')) {
+                return "history questions are my specialty! what time period or event are you studying?";
+            } else if (message.includes('science') || message.includes('physics') || message.includes('chemistry')) {
+                return "i love science questions! what specific topic are you working on?";
+            } else if (message.includes('english') || message.includes('essay') || message.includes('writing')) {
+                return "i can help with essays and writing assignments. what's the topic or prompt?";
+            } else if (message.includes('help') || message.includes('stuck')) {
+                return "i'm here to help! could you share more details about the problem you're stuck on?";
+            } else if (message.includes('thank') || message.includes('thanks')) {
+                return "you're welcome! let me know if you need help with anything else.";
+            } else if (message.includes('quadratic')) {
+                return "for quadratic equations (ax² + bx + c = 0), you can use the quadratic formula: x = (-b ± √(b² - 4ac)) / 2a. would you like me to solve a specific equation for you?";
+            } else if (message.includes('derivative') || message.includes('calculus')) {
+                return "for derivatives, remember the basic rules like the power rule: d/dx(x^n) = n·x^(n-1). what specific calculus problem are you working on?";
+            } else if (message.includes('pythagorean') || message.includes('triangle')) {
+                return "the pythagorean theorem states that in a right triangle, a² + b² = c², where c is the hypotenuse. do you need help with a specific triangle problem?";
+            } else {
+                // Generic responses
+                const responses = [
+                    "i can help with that! could you provide more details about the problem?",
+                    "that's an interesting question. let me help you work through it step by step.",
+                    "i'd be happy to help with this. can you share any specific parts you're struggling with?",
+                    "i can definitely assist with that. what have you tried so far?",
+                    "let's tackle this together! could you share the full problem statement?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+        }
+        
+        // Handle file upload
+        function handleFileUpload(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Add user message with image
+                addMessage('i need help with this problem', 'user', e.target.result);
+                
+                // Simulate AI thinking
+                setTimeout(() => {
+                    // Generate AI response for image
+                    const response = "i can see the image you've uploaded. it looks like a problem involving algebraic equations. would you like me to explain how to solve it step by step?";
+                    
+                    // Add AI response
+                    addMessage(response, 'ai');
+                    
+                    // Scroll to bottom
+                    scrollToBottom();
+                }, 2000);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Event Listeners
+        sendBtn.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        uploadBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                handleFileUpload(this.files[0]);
+            }
+        });
+        
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('active');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('active');
+        }
+        
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFileUpload(file);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on chat input
+            chatInput.focus();
+            
+            // Set up initial layout
+            if (window.innerWidth <= 768) {
+                uploadSection.style.order = 2;
+                chatSection.style.order = 1;
+            }
+        });
+    </script>
+</body>
+</html>
